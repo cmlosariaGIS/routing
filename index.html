@@ -675,7 +675,7 @@
 
             const originCoord = ol.proj.toLonLat(originMarker.getSource().getFeatures()[0].getGeometry().getCoordinates());
             const destCoord = ol.proj.toLonLat(destinationMarker.getSource().getFeatures()[0].getGeometry().getCoordinates());
-            const baseUrl = `http://router.project-osrm.org/route/v1/${currentMode}/${originCoord[0]},${originCoord[1]};${destCoord[0]},${destCoord[1]}?overview=full&geometries=geojson&steps=true`;
+            const baseUrl = `https://router.project-osrm.org/route/v1/${currentMode}/${originCoord[0]},${originCoord[1]};${destCoord[0]},${destCoord[1]}?overview=full&geometries=geojson&steps=true`;
 
             fetch(baseUrl)
                 .then((response) => {
