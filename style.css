@@ -1,0 +1,291 @@
+#map {
+    width: 100%;
+    height: 100vh;
+}
+
+.routing-floating-widget {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    background-color: white;
+    padding: 15px 30px 15px 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 410px;
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.mode-button {
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: white;
+    color: #1E3050;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+}
+
+.mode-button:hover,
+.mode-button.active {
+    background-color: #1E3050;
+    color: white;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    height: 40px;
+    width: 420px;
+    margin-bottom: 5px;
+}
+
+.input-container:focus-within {
+    border-color: #1E3050;
+    box-shadow: 0px 2px 4px rgba(0, 123, 255, 0.4);
+}
+
+.input-container input {
+    border: none;
+    background-color: transparent;
+    flex: 1;
+    height: 100%;
+    font-size: 16px;
+    padding: 0 20px;
+}
+
+.input-container input::placeholder {
+    color: #999;
+}
+
+.input-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #1E3050;
+}
+
+.input-container button {
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    color: #1E3050;
+    cursor: pointer;
+    outline: none;
+    margin-right: 10px;
+}
+
+input:focus {
+    outline: none;
+}
+
+#origin,
+#destination {
+    flex: 1;
+}
+
+#gps {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    color: #cfcfcf;
+    cursor: pointer;
+    outline: none;
+    margin-right: 8px;
+}
+
+#gps:hover {
+    color: #1E3050;
+}
+
+#gps.active {
+    color: #1E3050;
+}
+
+.use-current-location {
+    font-style: italic;
+}
+
+#routeButton {
+    background-color: #1E3050;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.2s;
+}
+
+#routeButton:hover {
+    background-color: #3bb2d4;
+}
+
+#clearrouteButton {
+    display: none;
+    /* hide the clear route button initially */
+    background-color: #ff0040;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.2s;
+}
+
+#clearrouteButton:hover {
+    background-color: #a20000;
+}
+
+
+label[for="mode"] {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: gray;
+}
+
+.input-boxes {
+    position: relative;
+    margin-top: 20px;
+}
+
+.suggestions-dropdown {
+    position: absolute;
+    z-index: 999;
+    background-color: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    /*width: calc(100% - 2 * 20px - 2 * 2px);*/
+    width: 400px;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.input-container {
+    position: relative;
+}
+
+#origin-dropdown {
+    top: 50px;
+    left: 0;
+}
+
+#destination-dropdown {
+    top: 105px;
+    left: 0;
+}
+
+.dismiss-widget {
+    position: absolute;
+    top: 8px;
+    right: 3px;
+    left: auto;
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    color: #1E3050;
+    cursor: pointer;
+    outline: none;
+}
+
+.dismiss-widget:hover {
+    color: #666;
+}
+
+#instructions {
+    font-family: 'Segoe UI';
+    padding: 20px;
+    background-color: white;
+    overflow-y: auto;
+    max-height: 550px;
+}
+
+#instructions::-webkit-scrollbar {
+    width: 8px;
+}
+
+#instructions::-webkit-scrollbar-track {
+    background-color: #F0F0F0;
+    border-radius: 4px;
+}
+
+#instructions::-webkit-scrollbar-thumb {
+    background-color: #C0C0C0;
+    border-radius: 4px;
+}
+
+#instructions::-webkit-scrollbar-thumb:hover {
+    background-color: #A0A0A0;
+}
+
+@-moz-document url-prefix() {
+    #instructions {
+        scrollbar-width: thin;
+        scrollbar-color: #C0C0C0 #F0F0F0;
+    }
+}
+
+#instructions .instruction-step {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+#instructions .instruction-arrow {
+    margin-right: 20px;
+}
+
+
+
+
+
+
+<style>
+    #floating-window {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    #floating-window button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #floating-window button:hover {
+        background-color: #45a049;
+    }
+</style>
