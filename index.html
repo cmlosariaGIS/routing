@@ -4,12 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./style.css">
+
     <title>OpenRouteService Map Example</title>
     <script src="https://cdn.jsdelivr.net/npm/@sakitam-gis/ol6@6.3.3/dist/ol.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.3.0/ol.css">
+
     <script src="https://kit.fontawesome.com/0eb73cfc5c.js" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!--Debounce-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
 
@@ -29,267 +35,12 @@
         type='text/css' />
 
     <style>
-        #map {
-            width: 100%;
-            height: 100vh;
-        }
 
-        .routing-floating-widget {
-            position: absolute;
-            top: 40px;
-            left: 40px;
-            background-color: white;
-            padding: 15px 30px 15px 15px;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 410px;
-        }
-
-        .mode-buttons {
-            display: flex;
-            gap: 5px;
-        }
-
-        .mode-button {
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: white;
-            color: #1E3050;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
-            outline: none;
-        }
-
-        .mode-button:hover,
-        .mode-button.active {
-            background-color: #1E3050;
-            color: white;
-        }
-
-        .input-container {
-            display: flex;
-            align-items: center;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            background-color: white;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            height: 40px;
-            width: 420px;
-            margin-bottom: 5px;
-        }
-
-        .input-container:focus-within {
-            border-color: #1E3050;
-            box-shadow: 0px 2px 4px rgba(0, 123, 255, 0.4);
-        }
-
-        .input-container input {
-            border: none;
-            background-color: transparent;
-            flex: 1;
-            height: 100%;
-            font-size: 16px;
-            padding: 0 20px;
-        }
-
-        .input-container input::placeholder {
-            color: #999;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            color: #1E3050;
-        }
-
-        .input-container button {
-            border: none;
-            background-color: transparent;
-            font-size: 20px;
-            color: #1E3050;
-            cursor: pointer;
-            outline: none;
-            margin-right: 10px;
-        }
-
-        input:focus {
-            outline: none;
-        }
-
-        #origin,
-        #destination {
-            flex: 1;
-        }
-
-        #gps {
-            flex: none;
-            width: 30px;
-            height: 30px;
-            padding: 0;
-            border: none;
-            background: transparent;
-            font-size: 18px;
-            color: #cfcfcf;
-            cursor: pointer;
-            outline: none;
-            margin-right: 8px;
-        }
-
-        #gps:hover {
-            color: #1E3050;
-        }
-
-        #gps.active {
-            color: #1E3050;
-        }
-
-        .use-current-location {
-            font-style: italic;
-        }
-
-        #routeButton {
-            background-color: #1E3050;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.2s;
-        }
-
-        #routeButton:hover {
-            background-color: #3bb2d4;
-        }
-
-        #clearrouteButton {
-            display: none;
-            /* hide the clear route button initially */
-            background-color: #ff0040;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.2s;
-        }
-
-        #clearrouteButton:hover {
-            background-color: #a20000;
-        }
-
-
-        label[for="mode"] {
-            font-family: "Segoe UI", Arial, sans-serif;
-            color: gray;
-        }
-
-        .input-boxes {
-            position: relative;
-            margin-top: 20px;
-        }
-
-        .suggestions-dropdown {
-            position: absolute;
-            z-index: 999;
-            background-color: white;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            /*width: calc(100% - 2 * 20px - 2 * 2px);*/
-            width: 400px;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .input-container {
-            position: relative;
-        }
-
-        #origin-dropdown {
-            top: 50px;
-            left: 0;
-        }
-
-        #destination-dropdown {
-            top: 105px;
-            left: 0;
-        }
-
-        .dismiss-widget {
-            position: absolute;
-            top: 8px;
-            right: 3px;
-            left: auto;
-            background-color: transparent;
-            border: none;
-            font-size: 18px;
-            color: #1E3050;
-            cursor: pointer;
-            outline: none;
-        }
-
-        .dismiss-widget:hover {
-            color: #666;
-        }
-
-        #instructions {
-            font-family: 'Segoe UI';
-            padding: 20px;
-            background-color: white;
-            overflow-y: auto;
-            max-height: 550px;
-        }
-
-        #instructions::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        #instructions::-webkit-scrollbar-track {
-            background-color: #F0F0F0;
-            border-radius: 4px;
-        }
-
-        #instructions::-webkit-scrollbar-thumb {
-            background-color: #C0C0C0;
-            border-radius: 4px;
-        }
-
-        #instructions::-webkit-scrollbar-thumb:hover {
-            background-color: #A0A0A0;
-        }
-
-        @-moz-document url-prefix() {
-            #instructions {
-                scrollbar-width: thin;
-                scrollbar-color: #C0C0C0 #F0F0F0;
-            }
-        }
-
-        #instructions .instruction-step {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-            padding: 5px;
-        }
-
-        #instructions .instruction-arrow {
-            margin-right: 20px;
-        }
     </style>
 </head>
 
 <body>
     <div id="map"></div>
-
 
     <div class="routing-floating-widget">
         <button class="dismiss-widget">
@@ -341,10 +92,25 @@
         <div id="instructions" style="display: none;"></div>
 
 
+        <div id="floating-window" style="display: none;">
+            <button id="explore-cafe-btn">Explore Cafe nearby</button>
+            <button id="explore-restaurants-btn">Explore Restaurants nearby</button>
+        </div>
+
+
+
+
     </div>
+
 
     <div id="origin-dropdown" class="suggestions-dropdown"></div>
     <div id="destination-dropdown" class="suggestions-dropdown"></div>
+
+    
+
+
+
+
 
     <script>
         // Declare originMarker, destinationMarker, and userLocLayer as global variables
@@ -356,7 +122,10 @@
             target: 'map',
             layers: [
                 new ol.layer.Tile({
-                    source: new ol.source.OSM()
+                    source: new ol.source.XYZ({
+                        url: 'https://api.maptiler.com/maps/topo-v2/{z}/{x}/{y}.png?key=ygYhKJ5CVp94V87ZZ49x',
+                        attributions: 'Map data &copy; <a href="https://www.maptiler.com/">MapTiler</a> contributors'
+                    })
                 })
             ],
             view: new ol.View({
@@ -364,6 +133,11 @@
                 zoom: 14
             })
         });
+
+
+
+
+
 
         // Check if Geolocation API is supported by the browser
         function isGeolocationSupported() {
@@ -666,17 +440,18 @@
             routeButton.addEventListener('click', getRoute);
         });
 
-        //Generate Route
+        /*
+        // Generate Route
         function getRoute() {
             if (!originMarker || !destinationMarker) {
                 alert('Please select both an origin and a destination');
                 return;
             }
-
+        
             const originCoord = ol.proj.toLonLat(originMarker.getSource().getFeatures()[0].getGeometry().getCoordinates());
             const destCoord = ol.proj.toLonLat(destinationMarker.getSource().getFeatures()[0].getGeometry().getCoordinates());
             const baseUrl = `https://router.project-osrm.org/route/v1/${currentMode}/${originCoord[0]},${originCoord[1]};${destCoord[0]},${destCoord[1]}?overview=full&geometries=geojson&steps=true`;
-
+        
             fetch(baseUrl)
                 .then((response) => {
                     return response.json();
@@ -700,48 +475,233 @@
                             })
                         })
                     );
-
+        
                     // Remove the existing route layer, if any
                     if (routeLayer) {
                         map.removeLayer(routeLayer);
                     }
-
+        
                     routeLayer = new ol.layer.Vector({
                         source: new ol.source.Vector({
                             features: [routeFeature]
                         })
                     });
                     map.addLayer(routeLayer);
-
-                    //Distance and Duration calculation
+        
+                    // Distance and Duration calculation
                     const distance = data.routes[0].distance / 1000;
                     const originalDuration = data.routes[0].duration / 60;
                     const adjustedDuration = originalDuration >= 16 ? originalDuration + 16 : originalDuration;
                     const hours = Math.floor(adjustedDuration / 60);
                     const minutes = Math.ceil(adjustedDuration % 60);
-
+        
                     document.getElementById('distance').innerHTML = `<i class="fa-solid fa-route"></i>&nbsp;&nbsp;Distance: ${distance.toFixed(2)} km`;
-
+        
                     if (adjustedDuration >= 60) {
                         document.getElementById('duration').innerHTML = `<i class="fas fa-clock"></i>&nbsp;&nbsp;Duration: ${hours} hr ${minutes} mins`;
                     } else {
                         document.getElementById('duration').innerHTML = `<i class="fas fa-clock"></i>&nbsp;&nbsp;Duration: ${Math.ceil(adjustedDuration)} mins`;
                     }
-
+        
                     const instructions = generateNavigationInstructions(data.routes[0].legs[0].steps);
                     document.getElementById('instructions').innerHTML = instructions;
-
+        
                     // Zoom to the extent of the route
                     const extent = routeLayer.getSource().getExtent();
                     map.getView().fit(extent, {
                         padding: [50, 50, 50, 50],
                         maxZoom: 14,
                     });
+        
+                    // Calculate midpoint
+                    const line = new ol.geom.LineString(routeCoords);
+                    const midPointCoord = line.getCoordinateAt(0.5); // 0.5 represents midpoint
+                    const midPointFeature = new ol.Feature({
+                        type: 'midpoint',
+                        geometry: new ol.geom.Point(midPointCoord)
+                    });
+        
+                    const midPointStyle = new ol.style.Style({
+                        image: new ol.style.Circle({
+                            radius: 6,
+                            fill: new ol.style.Fill({ color: 'orange' }),
+                            stroke: new ol.style.Stroke({
+                                color: 'rgba(255, 69, 0, 0.8)',
+                                width: 2
+                            })
+                        })
+                    });
+        
+                    midPointFeature.setStyle(midPointStyle);
+        
+                    // Add midpoint to map
+                    const midpointLayer = new ol.layer.Vector({
+                        source: new ol.source.Vector({
+                            features: [midPointFeature]
+                        })
+                    });
+        
+                    map.addLayer(midpointLayer);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
+        */
+
+
+
+        // Get route button
+//const routeButton = document.getElementById('routeButton');
+
+// Get route button
+//const routeButton = document.getElementById('routeButton');
+
+// Add click event listener to route button
+routeButton.addEventListener('click', () => {
+    // Call the getRoute function
+    getRoute();
+
+    // Show the floating window
+    const floatingWindow = document.getElementById('floating-window');
+    floatingWindow.style.display = 'block';
+});
+
+// Generate Route
+function getRoute() {
+    if (!originMarker || !destinationMarker) {
+        alert('Please select both an origin and a destination');
+        return;
+    }
+
+    const originCoord = ol.proj.toLonLat(originMarker.getSource().getFeatures()[0].getGeometry().getCoordinates());
+    const destCoord = ol.proj.toLonLat(destinationMarker.getSource().getFeatures()[0].getGeometry().getCoordinates());
+    const baseUrl = `https://router.project-osrm.org/route/v1/${currentMode}/${originCoord[0]},${originCoord[1]};${destCoord[0]},${destCoord[1]}?overview=full&geometries=geojson&steps=true`;
+
+    fetch(baseUrl)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            const route = data.routes[0].geometry;
+            const routeCoords = route.coordinates.map((coord) => {
+                return ol.proj.fromLonLat(coord);
+            });
+            const routeFeature = new ol.Feature({
+                type: 'route',
+                geometry: new ol.geom.LineString(routeCoords)
+            });
+            routeFeature.setStyle(
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        width: 6,
+                        color: 'rgba(30, 144, 255, 0.8)',
+                        shadowColor: 'rgba(30, 144, 255, 0.4)',
+                        shadowBlur: 10
+                    })
+                })
+            );
+
+            // Remove the existing route layer, if any
+            if (routeLayer) {
+                map.removeLayer(routeLayer);
+            }
+
+            routeLayer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [routeFeature]
+                })
+            });
+            map.addLayer(routeLayer);
+
+            // Distance and Duration calculation
+            const distance = data.routes[0].distance / 1000;
+            const originalDuration = data.routes[0].duration / 60;
+            const adjustedDuration = originalDuration >= 16 ? originalDuration + 16 : originalDuration;
+            const hours = Math.floor(adjustedDuration / 60);
+            const minutes = Math.ceil(adjustedDuration % 60);
+
+            document.getElementById('distance').innerHTML = `<i class="fa-solid fa-route"></i>&nbsp;&nbsp;Distance: ${distance.toFixed(2)} km`;
+
+            if (adjustedDuration >= 60) {
+                document.getElementById('duration').innerHTML = `<i class="fas fa-clock"></i>&nbsp;&nbsp;Duration: ${hours} hr ${minutes} mins`;
+            } else {
+                document.getElementById('duration').innerHTML = `<i class="fas fa-clock"></i>&nbsp;&nbsp;Duration: ${Math.ceil(adjustedDuration)} mins`;
+            }
+
+            const instructions = generateNavigationInstructions(data.routes[0].legs[0].steps);
+            document.getElementById('instructions').innerHTML = instructions;
+
+            // Zoom to the extent of the route
+            const extent = routeLayer.getSource().getExtent();
+            map.getView().fit(extent, {
+                padding: [50, 50, 50, 50],
+                maxZoom: 14,
+            });
+
+            // Calculate midpoint
+            const line = new ol.geom.LineString(routeCoords);
+            const midPointCoord = line.getCoordinateAt(0.5); // 0.5 represents midpoint
+            const midPointFeature = new ol.Feature({
+                type: 'midpoint',
+                geometry: new ol.geom.Point(midPointCoord)
+            });
+
+            const midPointStyle = new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 6,
+                    fill: new ol.style.Fill({ color: 'orange' }),
+                    stroke: new ol.style.Stroke({
+                        color: 'rgba(255, 69, 0, 0.8)',
+                        width: 2
+                    })
+                })
+            });
+
+            midPointFeature.setStyle(midPointStyle);
+
+            // Add midpoint to map
+            const midpointLayer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [midPointFeature]
+                })
+            });
+
+            map.addLayer(midpointLayer);
+
+            // Convert midpoint coordinates to WGS84
+            const midPointWGS84 = ol.proj.transform(midPointCoord, 'EPSG:3857', 'EPSG:4326');
+
+            // Show the floating window
+            const floatingWindow = document.getElementById('floating-window');
+            floatingWindow.style.display = 'block';
+
+            // Update button links
+            const cafeButton = document.getElementById('explore-cafe-btn');
+            cafeButton.onclick = function() {
+                window.open(`https://www.google.com/maps/search/cafes/@${midPointWGS84[1]},${midPointWGS84[0]},18z?entry=ttu`, '_blank');
+            };
+
+            const restaurantButton = document.getElementById('explore-restaurants-btn');
+            restaurantButton.onclick = function() {
+                window.open(`https://www.google.com/maps/search/restaurants/@${midPointWGS84[1]},${midPointWGS84[0]},18z/data=!3m1!4b1?entry=ttu`, '_blank');
+            };
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+
+
+
+
+
+
+
+
+
+
 
         //Route instructions
         function generateNavigationInstructions(steps) {
